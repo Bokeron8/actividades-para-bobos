@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actividades para Parejas</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #ffd1dc, #ffb6c1);
+        padding: 2rem;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #ff4b6e;
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+      }
+
+      .categories {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .category {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+      }
+
+      .category:hover {
+        transform: translateY(-5px);
+      }
+
+      .category h2 {
+        color: #ff4b6e;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        text-align: center;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px dashed #ffd1dc;
+      }
+
+      .activity {
+        background: #ffd1dc;
+        margin: 0.5rem 0;
+        padding: 0.8rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .activity:hover {
+        background: #ff8da1;
+        color: white;
+        transform: scale(1.02);
+      }
+
+      .activity.completed {
+        background: #98fb98;
+        text-decoration: line-through;
+      }
+
+      .heart {
+        color: #ff4b6e;
+        font-size: 1.2rem;
+        margin-left: 0.5rem;
+      }
+
+      .controls {
+        text-align: center;
+        margin: 2rem 0;
+      }
+
+      button {
+        background: #ff4b6e;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin: 0 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background: #ff2d55;
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .categories {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>💚Cosas para bobos💙</h1>
+
+      <div class="controls">
+        <button onclick="resetActivities()">Reiniciar Todo</button>
+        <button onclick="randomActivity()">Actividad Aleatoria</button>
+      </div>
+
+      <div class="categories" id="categories"></div>
+    </div>
+
+    <script>
+      const activities = {
+        "Actividades Físicas": [
+          "Yoga juntos",
+          "Aprender coreografia de alguna cancion",
+          "Aventura de senderismo",
+          "Masajes",
+          "Hacer ejercicio",
+          "Paseo en bicicleta",
+          "Besarnos con musica ji",
+        ],
+        "Actividades Creativas": [
+          "Dibujar al otro",
+          "Karoke de canciones o cantar con la letra jeje",
+          "Cocinar algo distinto de lo usual",
+          "Pulseritassss",
+          "Hacer un álbum de recuerdos",
+          "Escribirnos cartas de amor",
+          "Sacarnos fotitos como los de bts",
+          "Hacer una playlist de spotify",
+          "Hacer una lista de pelis para ver",
+        ],
+        "Actividades de Pensamiento": [
+          "Armar un rompecabezas",
+          "Leer juntitos",
+          "Jugar al ajedrez",
+          "Mirar las estrellas y aprender constelaciones",
+          "Juego de resolver misterios",
+          "Jugar veo veo jeje",
+          "Terminar el cuadrito de cinnamon con el flan je",
+        ],
+        "Actividades Cooperativas": [
+          "Plantar una flor",
+          "Hacer un escape room",
+          "Jugar jueguitos",
+        ],
+        "Actividades Románticas": [
+          "Cena a la luz de las velas",
+          "Crear una lista de deseos",
+          "Ver el amanecer",
+          "Bailar bajo la lluvia nuevamente ji",
+          "Búsqueda del tesoro romántica",
+          "Picnic",
+        ],
+      };
+
+      function createActivityElement(activity) {
+        const div = document.createElement("div");
+        div.className = "activity";
+        div.innerHTML = `
+                ${activity}
+                <span class="heart">♥</span>
+            `;
+        div.onclick = function () {
+          this.classList.toggle("completed");
+        };
+        return div;
+      }
+
+      function renderCategories() {
+        const categoriesDiv = document.getElementById("categories");
+        categoriesDiv.innerHTML = "";
+
+        Object.entries(activities).forEach(([category, activityList]) => {
+          const categoryDiv = document.createElement("div");
+          categoryDiv.className = "category";
+          categoryDiv.innerHTML = `<h2>${category}</h2>`;
+
+          activityList.forEach((activity) => {
+            categoryDiv.appendChild(createActivityElement(activity));
+          });
+
+          categoriesDiv.appendChild(categoryDiv);
+        });
+      }
+
+      function resetActivities() {
+        document.querySelectorAll(".activity").forEach((activity) => {
+          activity.classList.remove("completed");
+        });
+      }
+
+      function randomActivity() {
+        const allActivities = document.querySelectorAll(".activity");
+        const uncompleted = Array.from(allActivities).filter(
+          (activity) => !activity.classList.contains("completed")
+        );
+
+        if (uncompleted.length === 0) {
+          alert(
+            "¡Todas las actividades completadas! Reinicia para comenzar de nuevo."
+          );
+          return;
+        }
+
+        // Reset previous highlight
+        allActivities.forEach((activity) => {
+          activity.style.transform = "";
+          activity.style.boxShadow = "";
+        });
+
+        const random =
+          uncompleted[Math.floor(Math.random() * uncompleted.length)];
+        random.scrollIntoView({ behavior: "smooth", block: "center" });
+        random.style.transform = "scale(1.05)";
+        random.style.boxShadow = "0 0 15px rgba(255, 75, 110, 0.5)";
+      }
+
+      // Initial render
+      renderCategories();
+    </script>
+  </body>
+</html>
